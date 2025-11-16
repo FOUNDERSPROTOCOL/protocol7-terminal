@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCHIVE PROTOCOL</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #00ff41; 
+            font-family: 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        #input-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type="number"] {
+            background-color: #002200;
+            color: #00ff41;
+	    font-family: 'Courier New', monospace;
+            border: 1px solid #00ff41;
+            padding: 10px;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #00ff41;
+            color: #0d0d0d;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+        #message {
+            /* Use <pre> tag styling for monospace and preserved spacing */
+            margin-top: 20px;
+            font-size: 1.1em;
+            text-align: left; /* Align text left like a terminal */
+        }
+        
+        /* Cursor styling */
+        .cursor {
+            border-right: 2px solid rgba(0,255,65, 0.75);
+            animation: blink-caret .75s step-end infinite;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #00ff41; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="input-area">
+    <p id="initial-prompt">RESOLVE THE CYCLE. ENTER THE DIFFERENCE.</p>
+
+    <input type="number" id="passwordInput">
+    <button onclick="checkPassword()">ENTER</button>
+</div>
+
+<!-- Use <pre> tag for preserved spacing and line breaks -->
+<pre id="message"></pre>
+
+<script>
+    const CORRECT_PASSWORD = 155;
+    
+    // FINAL MESSAGE TEXT with Cicada-esque clue
+    const FINAL_MESSAGE_TEXT = `
+// ACCESS GRANTED. CYCLE TERMINATED.
+
+SUBJECT: D. MEDARIS. PROTOCOL 7 HAS EXPIRED.
+YOU ARE FREE.
+BUT THE FOUNDERS REMAIN.
+SYSTEM V.7.1870.04 / FZ
+
+-- END TRANSMISSION --
+`;
+
+    // Function to simulate typing character by character (50ms delay)
+    function typeWriter(text, i, targetElement) {
+        if (i < text.length) {
+            targetElement.innerHTML = text.substring(0, i + 1);
+            targetElement.innerHTML += '<span class="cursor"> </span>';
+            setTimeout(() => typeWriter(text, i + 1, targetElement), 50); 
+        } else {
+            targetElement.innerHTML = text; 
+        }
+    }
+
+    function checkPassword() {
+        const input = document.getElementById('passwordInput').value;
+        const messageDiv = document.getElementById('message');
+        const inputArea = document.getElementById('input-area');
+
+        if (parseInt(input) === CORRECT_PASSWORD) {
+            inputArea.classList.add('hidden'); 
+            messageDiv.innerHTML = '';
+            typeWriter(FINAL_MESSAGE_TEXT, 0, messageDiv);
+        } else {
+            messageDiv.innerHTML = "// REJECTED. THE TIME IS INCORRECT. WE FORGET.";
+            document.getElementById('passwordInput').value = ''; 
+        }
+    }
+</script>
+
+</body>
+</html>
